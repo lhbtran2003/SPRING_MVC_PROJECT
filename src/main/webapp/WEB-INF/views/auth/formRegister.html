@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Form đăng kí</h1>
+<form action="/auth/register" method="post" th:object="${request}">
+    <div>
+        Họ và tên
+        <input type="text" th:field="*{name}">
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+    </div>
+    <div>
+        Email
+        <input type="text" th:field="*{email}">
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+    </div>
+    <div>
+        Số điện thoại
+        <input type="text" th:field="*{phone}">
+        <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+    </div>
+    <div>
+        Giới tính
+        <div>
+            <input type="radio" th:field="*{sex}" value="true" id="male">
+            <label for="male">Nam</label>
+        </div>
+        <div>
+            <input type="radio" th:field="*{sex}" value="true" id="female">
+            <label for="female">Nữ</label>
+        </div>
+        <p th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></p>
+
+    </div>
+    <div>
+        Ngày sinh
+        <input type="date" th:field="*{dob}"/>
+        <p th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></p>
+    </div>
+    <div>
+        Mật khẩu
+        <input type="text" th:field="*{password}">
+        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+    </div>
+    <div>
+        Xác nhận mật khẩu
+        <input type="text" th:field="*{confirmPassword}">
+        <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
+    </div>
+    <button type="submit">Đăng kí</button>
+</form>
+</body>
+</html>

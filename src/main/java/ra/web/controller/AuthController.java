@@ -1,0 +1,61 @@
+package ra.web.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ra.web.dto.LoginRequest;
+import ra.web.dto.RegisterRequest;
+import ra.web.entity.Student;
+import ra.web.service.auth.AuthServiceImpl;
+import ra.web.service.student.IStudentService;
+
+import javax.validation.Valid;
+
+@Controller
+@RequestMapping("/auth")
+public class AuthController {
+
+    @Autowired
+    private AuthServiceImpl authService;
+
+    // hiện trang đăng nhập (login)
+    @GetMapping("/login")
+    public String showFormLogin(Model model) {
+        model.addAttribute("request", new LoginRequest());
+        return "auth/formLogin";
+    }
+
+    // xu lí đăng nhập
+    @PostMapping("/login")
+    public String processFormLogin(@Valid @ModelAttribute("request") LoginRequest loginRequest, BindingResult bind, Model model) {
+        if (bind.hasErrors()) {
+            model.addAttribute("request", loginRequest);
+            return "auth/formLogin";
+        }
+        return "home";
+    }
+
+    // hiện form đăng kí (register)
+    @GetMapping("/register")
+    public String showFormRegister(Model model) {
+        model.addAttribute("request", new RegisterRequest());
+        return "auth/formRegister";
+    }
+
+    // xu lí đăng nhập
+    @PostMapping("/register")
+    public String processFormRegister(@Valid @ModelAttribute("request") RegisterRequest request, BindingResult bind, Model model) {
+//        boolean check = studentService.isExistEmail(request.getEmail());
+        if (bind.hasErrors()) {
+            model.addAttribute("request", request);
+            return "auth/formRegister";
+        }
+        authService.register(request);
+        return "home";
+    }
+}
