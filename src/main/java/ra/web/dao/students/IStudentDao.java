@@ -1,7 +1,7 @@
 package ra.web.dao.students;
 
 import ra.web.dao.IGenericDao;
-import ra.web.dto.LoginRequest;
+import ra.web.dto.auth.LoginRequest;
 import ra.web.entity.Student;
 
 public interface IStudentDao extends IGenericDao<Student, Integer> {

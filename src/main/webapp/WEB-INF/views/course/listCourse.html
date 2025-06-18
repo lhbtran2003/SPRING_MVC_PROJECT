@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1px">
+    <thead>
+    <th>Hình ảnh</th>
+    <th>ID</th>
+    <th>Tên khóa học</th>
+    <th>Tên giảng viên</th>
+    <th>Thời lượng</th>
+    <th>Ngày tạo</th>
+    <th>Thao tác</th>
+    </thead>
+    <tbody>
+    <tr th:each="c: ${listCourse}">
+        <td><img th:src="${c.getImage()}" style="{width: 100px; height: 100px}" alt="no image"/></td>
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.name}"></td>
+        <td th:text="${c.instructor}"></td>
+        <td th:text="${c.duration}"></td>
+        <td th:text="${c.createAt}"></td>
+        <td>
+            <form action="/update">
+                <input type="hidden" th:value="${c.id}"/>
+                <button type="button">Sửa</button>
+            </form>
+            <form action="/delete">
+                <input type="hidden" th:value="${c.id}"/>
+                <button type="submit">Xóa</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

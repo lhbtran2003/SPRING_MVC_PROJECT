@@ -2,7 +2,7 @@ package ra.web.dao.students;
 
 
 import org.springframework.stereotype.Repository;
-import ra.web.dto.LoginRequest;
+import ra.web.dto.auth.LoginRequest;
 import ra.web.entity.Student;
 
 import javax.persistence.EntityManager;
@@ -45,5 +45,10 @@ public class StudentDaoImpl implements IStudentDao {
                 .setParameter("email", loginRequest.getEmail())
                 .setParameter("password", loginRequest.getPassword())
                 .getSingleResult();
+    }
+
+    @Override
+    public Student findById(Integer id) {
+        return null;
     }
 }

@@ -1,14 +1,15 @@
 package ra.web.service.student;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ra.web.dao.students.IStudentDao;
-import ra.web.dao.students.StudentDaoImpl;
-import ra.web.dto.LoginRequest;
-import ra.web.dto.RegisterRequest;
 import ra.web.entity.Student;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class StudentServiceImpl implements IStudentService {
-
+    @Override
+    public List<Student> findAll() {
+        return Collections.emptyList();
+    }
 }

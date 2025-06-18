@@ -1,5 +1,7 @@
 package ra.web.config;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -20,6 +22,10 @@ import org.thymeleaf.templatemode.TemplateMode;
 @EnableWebMvc
 @ComponentScan(basePackages = "ra.web")
 public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
+    private final String CLOUD_NAME = "dle3jhlcc";
+    private final String API_KEY = "459786523724538";
+    private final String API_SECRET = "jQvI5jZeC8VRlUTNbHhVvoLD_UI";
+
     private ApplicationContext applicationContext;
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -52,15 +58,14 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
         return viewResolver;
     }
 
-//    @Bean
-//    public LocalValidatorFactoryBean localValidatorFactoryBean() {
-//        LocalValidatorFactoryBean factoryBean = new LocalValidatorFactoryBean();
-//        factoryBean.setApplicationContext(applicationContext);
-//        return factoryBean;
-//    }
-//
-//    @Override
-//    public Validator getValidator() {
-//        return localValidatorFactoryBean();
-//    }
+    @Bean
+    public Cloudinary cloudinary() {
+        return new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", CLOUD_NAME,
+                "api_key", API_KEY,
+                "api_secret", API_SECRET,
+                "secure", true
+        ));
+    }
+
 }

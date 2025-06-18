@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ra.web.dto.LoginRequest;
-import ra.web.dto.RegisterRequest;
+import ra.web.dto.auth.LoginRequest;
+import ra.web.dto.auth.RegisterRequest;
 import ra.web.entity.Student;
 import ra.web.service.auth.AuthServiceImpl;
-import ra.web.service.student.IStudentService;
 
 import javax.validation.Valid;
 

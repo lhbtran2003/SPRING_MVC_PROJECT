@@ -1,7 +1,7 @@
 package ra.web.utils.validate;
 
 import org.springframework.stereotype.Component;
-import ra.web.dto.RegisterRequest;
+import ra.web.dto.auth.RegisterRequest;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

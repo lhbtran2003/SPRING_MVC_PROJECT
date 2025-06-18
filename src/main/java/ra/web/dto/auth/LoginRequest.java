@@ -1,4 +1,4 @@
-package ra.web.dto;
+package ra.web.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;
