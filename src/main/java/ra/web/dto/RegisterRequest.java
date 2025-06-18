@@ -26,7 +26,7 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank(message = "Vui lòng nhập số điện thoại")
-    @UniquePhone()
+    @UniquePhone(message = "hahahahha")
     private String phone;
 
     @NotNull(message = "Vui lòng chọn giới tính")

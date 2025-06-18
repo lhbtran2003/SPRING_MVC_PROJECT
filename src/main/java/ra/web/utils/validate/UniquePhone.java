@@ -9,12 +9,11 @@ import java.lang.annotation.Target;
 
 @Constraint(validatedBy = UniquePhoneValidator.class)
 @Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 
 public @interface UniquePhone {
     String message() default "{Số điện thoại đã tồn tại}";
     Class<?>[] groups() default {};
-    // Dùng cho validation nhóm (ít khi dùng ở mức cơ bản)
 
     Class<? extends Payload>[] payload() default {};
-    // Dùng để thêm metadata nếu cần (ít khi dùng)
 }

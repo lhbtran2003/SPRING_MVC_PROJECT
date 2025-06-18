@@ -29,7 +29,7 @@ public class StudentDaoImpl implements IStudentDao {
 
     @Override
     public boolean isExistPhone(String phone) {
-        int count = em.createQuery("SELECT COUNT(*) FROM Student s WHERE s.phone = :phone", Integer.class).setParameter("phone", phone).getSingleResult();
+        Long count = em.createQuery("SELECT COUNT(*) FROM Student s WHERE s.phone = :phone", Long.class).setParameter("phone", phone).getSingleResult();
         return count > 0;
     }
 
@@ -41,10 +41,9 @@ public class StudentDaoImpl implements IStudentDao {
 
     @Override
     public Student login(LoginRequest loginRequest) {
-        int count = em.createQuery("SELECT COUNT(*) FROM Student s WHERE s.email = :email AND s.password = :password", Integer.class).setParameter("email", loginRequest.getEmail()).setParameter("password", loginRequest.getPassword()).getSingleResult();
-        if (count > 0) {
-            return em.find(Student.class, loginRequest.getEmail());
-        }
-        return null;
+        return em.createQuery("SELECT s FROM Student s WHERE s.email = :email AND s.password = :password", Student.class)
+                .setParameter("email", loginRequest.getEmail())
+                .setParameter("password", loginRequest.getPassword())
+                .getSingleResult();
     }
 }

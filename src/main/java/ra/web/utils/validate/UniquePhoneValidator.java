@@ -3,7 +3,6 @@ package ra.web.utils.validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ra.web.dao.students.IStudentDao;
-import ra.web.dao.students.StudentDaoImpl;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

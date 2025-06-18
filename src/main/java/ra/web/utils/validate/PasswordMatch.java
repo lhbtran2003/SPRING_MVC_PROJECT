@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Constraint(validatedBy = PasswordMatchValidator.class)
 @Target(ElementType.TYPE)
-
+@Retention(RetentionPolicy.RUNTIME)
 public @interface PasswordMatch {
     String message() default "{Mật khẩu không trùng khớp}";
     Class<?>[] groups() default {};
