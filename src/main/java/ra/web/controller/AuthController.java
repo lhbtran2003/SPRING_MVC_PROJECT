@@ -37,6 +37,18 @@ public class AuthController {
             model.addAttribute("request", loginRequest);
             return "auth/formLogin";
         }
+        boolean existedEmail = authService.isExistEmail(loginRequest.getEmail());
+        if (!existedEmail) {
+            model.addAttribute("request", loginRequest);
+            model.addAttribute("errorEmail", "Email chưa tồn tại");
+            return "auth/formLogin";
+        }
+        Student s = authService.login(loginRequest);
+        if (s == null) {
+            model.addAttribute("request", loginRequest);
+            model.addAttribute("errorPassword", "Mật khẩu không đúng");
+            return "auth/formLogin";
+        }
         return "home";
     }
 
