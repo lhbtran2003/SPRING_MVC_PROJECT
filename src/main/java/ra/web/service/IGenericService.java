@@ -7,4 +7,5 @@ public interface IGenericService<T,E,S,U>{
     void add(S s);
     T findById(E id);
     void update(E id, U request);
+    void delete(E id);
 }

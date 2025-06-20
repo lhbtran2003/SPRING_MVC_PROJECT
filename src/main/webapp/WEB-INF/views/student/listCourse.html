@@ -5,19 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<form method="get" action="/admin/courses">
+<form method="get" action="/all-course">
     <input type="text" name="name" placeholder="Tìm tên" th:value="${name}" >
-
-    <select name="sortBy">
-        <option value="id" th:selected="${sortBy == 'id'}">ID</option>
-        <option value="name" th:selected="${sortBy == 'name'}">Tên</option>
-    </select>
-
-    <select name="order">
-        <option value="asc" th:selected="${order == 'asc'}">Tăng</option>
-        <option value="desc" th:selected="${order == 'desc'}">Giảm</option>
-    </select>
-
     <button type="submit">Tìm kiếm</button>
 </form>
 
@@ -56,6 +45,4 @@
     </tbody>
 </table>
 </body>
-<script>
-</script>
 </html>

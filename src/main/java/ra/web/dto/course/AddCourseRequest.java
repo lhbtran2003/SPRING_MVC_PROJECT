@@ -4,16 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import ra.web.utils.validate.UniqueCourseName;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Component
 @Setter
 @Getter
 public class AddCourseRequest {
     @NotBlank(message = "Không được để trống.")
+    @UniqueCourseName()
     private String name;
 
     @NotNull(message = "Không được để trống")

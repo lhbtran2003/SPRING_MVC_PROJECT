@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -42,4 +44,7 @@ public class Student {
 
     @Column(nullable = false, columnDefinition = "BIT")
     private Boolean role; // Student = false (0), Admin = true (1)
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Enrollment> enrollments;
 }

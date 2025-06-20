@@ -10,6 +10,7 @@ import ra.web.entity.Course;
 import ra.web.utils.cloudinary.CloudinaryService;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -68,5 +69,25 @@ public class CourseServiceImpl implements ICourseService{
         }
         courseDao.update(course);
 
+    }
+
+    @Override
+    public void delete(Integer id) {
+          courseDao.delete(id);
+    }
+
+    @Override
+    public boolean isExistName(String name) {
+        return courseDao.isExistName(name);
+    }
+
+    @Override
+    public List<Course> findByName(String name) {
+        return courseDao.getCourseByName(name);
+    }
+
+    @Override
+    public List<Course> searchAndSort(String name, String sortBy, String order) {
+        return courseDao.searchAndSort(name, sortBy, order);
     }
 }

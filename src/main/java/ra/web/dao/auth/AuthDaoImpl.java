@@ -1,4 +1,4 @@
-package ra.web.dao.students;
+package ra.web.dao.auth;
 
 
 import org.springframework.stereotype.Repository;
@@ -11,15 +11,12 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public class StudentDaoImpl implements IStudentDao {
+public class AuthDaoImpl implements IAuthDao {
 
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public List<Student> findAll() {
-        return em.createQuery("from Student", Student.class).getResultList();
-    }
+
 
     @Override
     public boolean isExistEmail(String email) {
@@ -47,8 +44,4 @@ public class StudentDaoImpl implements IStudentDao {
                 .getSingleResult();
     }
 
-    @Override
-    public Student findById(Integer id) {
-        return null;
-    }
 }

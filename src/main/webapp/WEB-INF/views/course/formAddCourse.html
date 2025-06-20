@@ -7,24 +7,25 @@
 <body>
 <h1>Thêm mới khóa học</h1>
 <form action="/admin/courses/add" method="post" th:object="${addCourseRequest}" enctype="multipart/form-data">
+
     <div>
         Tên khoas học
-        <input type="text" th:field="*{name}">
+        <input type="text" th:field="*{name}" >
         <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
     </div>
     <div>
         Tên giảng viên
-        <input type="text" th:field="*{instructor}">
+        <input type="text" th:field="*{instructor}" >
         <p th:if="${#fields.hasErrors('instructor')}" th:errors="*{instructor}"></p>
     </div>
     <div>
         Thời lượng (giờ)
-        <input type="text" th:field="*{duration}">
+        <input type="text" th:field="*{duration}" >
         <p th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></p>
     </div>
     <div>
         Ảnh
-        <input type="file" th:field="*{image}">
+        <input type="file" th:field="*{image}" name="image">
 <!--        <p th:if="${#fields.hasErrors('')}" th:errors="*{}"></p>-->
     </div>
     <button type="submit">Thêm mới</button>

@@ -2,7 +2,7 @@ package ra.web.service.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ra.web.dao.students.IStudentDao;
+import ra.web.dao.auth.IAuthDao;
 import ra.web.dto.auth.LoginRequest;
 import ra.web.dto.auth.RegisterRequest;
 import ra.web.entity.Student;
@@ -10,7 +10,7 @@ import ra.web.entity.Student;
 public class AuthServiceImpl implements IAuthService{
 
     @Autowired
-    public IStudentDao studentDao;
+    public IAuthDao studentDao;
 
     @Override
     public void register(RegisterRequest request) {

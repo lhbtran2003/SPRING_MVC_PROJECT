@@ -1,10 +1,11 @@
-package ra.web.dao.students;
+package ra.web.dao.auth;
 
 import ra.web.dao.IGenericDao;
 import ra.web.dto.auth.LoginRequest;
 import ra.web.entity.Student;
 
-public interface IStudentDao extends IGenericDao<Student, Integer> {
+public interface IAuthDao {
+      void save(Student student);
       boolean isExistEmail(String email);
       boolean isExistPhone(String phone);
       Student login(LoginRequest loginRequest);
