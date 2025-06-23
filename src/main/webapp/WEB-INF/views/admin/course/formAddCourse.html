@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm khóa học mới</title>
+    <link rel="stylesheet" href="static/css/sidebar.css">
+    <link rel="stylesheet" href="static/css/forms.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+<div class="form-container">
+    <div class="form-content">
+        <h1 class="form-title">Thêm khóa học mới</h1>
+
+        <form class="course-form" action="/admin/courses/add" method="post"
+              th:object="${addCourseRequest}" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label>Tên khóa học</label>
+                <input type="text" class="form-control" th:field="*{name}">
+                <p class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+
+            <div class="form-group">
+                <label>Tên giảng viên</label>
+                <input type="text" class="form-control" th:field="*{instructor}">
+                <p class="error-message" th:if="${#fields.hasErrors('instructor')}" th:errors="*{instructor}"></p>
+            </div>
+
+            <div class="form-group">
+                <label>Thời lượng (giờ)</label>
+                <input type="text" class="form-control" th:field="*{duration}">
+                <p class="error-message" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></p>
+            </div>
+
+            <div class="form-group">
+                <label>Ảnh</label>
+                <input type="file" class="form-control file-input" th:field="*{image}" name="image">
+            </div>
+
+            <button type="submit" class="submit-btn">Thêm mới</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

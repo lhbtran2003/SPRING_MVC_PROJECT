@@ -26,7 +26,7 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public Student findById(Integer id) {
-        return null;
+        return studentDao.findById(id);
     }
 
     @Override
@@ -38,4 +38,7 @@ public class StudentServiceImpl implements IStudentService {
     public void delete(Integer id) {
 
     }
+
+
+
 }

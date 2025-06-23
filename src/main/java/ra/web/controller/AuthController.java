@@ -1,5 +1,6 @@
 package ra.web.controller;
 
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ import ra.web.dto.auth.RegisterRequest;
 import ra.web.entity.Student;
 import ra.web.service.auth.AuthServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -21,6 +24,8 @@ public class AuthController {
 
     @Autowired
     private AuthServiceImpl authService;
+    @Autowired
+    private HttpServletRequest request;
 
     // hiện trang đăng nhập (login)
     @GetMapping("/login")
@@ -31,7 +36,7 @@ public class AuthController {
 
     // xu lí đăng nhập
     @PostMapping("/login")
-    public String processFormLogin(@Valid @ModelAttribute("request") LoginRequest loginRequest, BindingResult bind, Model model) {
+    public String processFormLogin(@Valid @ModelAttribute("request") LoginRequest loginRequest, BindingResult bind, Model model, HttpSession session) {
         if (bind.hasErrors()) {
             model.addAttribute("request", loginRequest);
             return "auth/formLogin";
@@ -48,10 +53,13 @@ public class AuthController {
             model.addAttribute("errorPassword", "Mật khẩu không đúng");
             return "auth/formLogin";
         }
-        return "home";
+        session.invalidate();
+        HttpSession newSession = request.getSession(true);
+        newSession.setAttribute("userLogin", s);
+        return "redirect:/";
     }
 
-    // hiện form đăng kí (register)
+    // hiện trang đăng kí (register)
     @GetMapping("/register")
     public String showFormRegister(Model model) {
         model.addAttribute("request", new RegisterRequest());
@@ -61,7 +69,6 @@ public class AuthController {
     // xu lí đăng nhập
     @PostMapping("/register")
     public String processFormRegister(@Valid @ModelAttribute("request") RegisterRequest request, BindingResult bind, Model model) {
-//        boolean check = studentService.isExistEmail(request.getEmail());
         if (bind.hasErrors()) {
             model.addAttribute("request", request);
             return "auth/formRegister";

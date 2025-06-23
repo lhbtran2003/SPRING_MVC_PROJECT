@@ -3,24 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/static/css/auth.css">
 </head>
 <body>
-<h2 th:if="${errorEmail != null}" th:text="${errorEmail}"></h2>
-<h2 th:if="${errorPassword != null}" th:text="${errorPassword}"></h2>
-<h1>Form đăng nhập</h1>
-<form action="/auth/login" method="post" th:object="${request}">
-    <div>
-        Email
-        <input type="text" th:field="*{email}">
-        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+<div class="split-container">
+    <!-- Left side with image -->
+    <div class="image-section">
+        <div class="image-overlay">
+            <h1>Welcome Back</h1>
+            <p>Beautiful dashboard designs for your next project</p>
+        </div>
     </div>
-    <div>
-        Mật khẩu
-        <input type="text" th:field="*{password}">
-        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
-    </div>
-    <button type="submit">Đăng nhập</button>
-</form>
+    <div class="form-section">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Join us today</h1>
+                <p>Clarity gives you the blocks and components you need to create a truly professional website.</p>
+            </div>
 
+            <div class="error-messages">
+                <h2 th:if="${errorEmail != null}" th:text="${errorEmail}"></h2>
+                <h2 th:if="${errorPassword != null}" th:text="${errorPassword}"></h2>
+            </div>
+
+            <form action="/auth/login" method="post" th:object="${request}" class="login-form">
+                <h2>Đăng nhập</h2>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" th:field="*{email}" id="email" placeholder="Nhập email của bạn">
+                    <p class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mật khẩu</label>
+                    <input id="password" type="text" th:field="*{password}">
+                    <p class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                </div>
+
+                <button type="submit" class="login-button">Đăng nhập</button>
+
+                <p class="register-link">Chưa có tài khoản? <a href="/auth/register">Đăng kí</a></p>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

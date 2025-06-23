@@ -1,0 +1,207 @@
+/* ===== GENERAL STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1e293b;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+.split-container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column; /* Mobile first */
+}
+
+/* ===== IMAGE SECTION ===== */
+.image-section {
+    flex: 1;
+    background: url('https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+    position: relative;
+    min-height: 300px; /* Minimum height for mobile */
+    display: flex; /* Always show image */
+}
+
+.image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    color: white;
+    text-align: center;
+}
+
+.image-overlay h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.image-overlay p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* ===== FORM SECTION ===== */
+.form-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: white;
+}
+
+.register-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.register-header h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #1e293b;
+}
+
+.register-header p {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ===== FORM STYLES ===== */
+.register-form {
+    width: 100%;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.form-group input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    transition: all 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* Radio buttons */
+.radio-group {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.radio-option input {
+    width: auto;
+}
+
+/* Buttons */
+.register-button {
+    background-color: #4f46e5;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.register-button:hover {
+    background-color: #4338ca;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9375rem;
+    color: #64748b;
+}
+
+.login-link a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Error messages */
+.error-text {
+    color: #ef4444;
+    font-size: 0.8125rem;
+    margin-top: 0.25rem;
+}
+
+/* ===== DESKTOP LAYOUT ===== */
+@media (min-width: 992px) {
+    .split-container {
+        flex-direction: row;
+    }
+
+    .image-section {
+        min-height: 100vh;
+        border-radius: 0;
+    }
+
+    .form-section {
+        padding: 2rem 4rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Make these fields span full width */
+    .form-group:nth-child(4), /* Gender */
+    .form-group:nth-child(7), /* Password */
+    .form-group:nth-child(8) { /* Confirm Password */
+        grid-column: span 2;
+    }
+}

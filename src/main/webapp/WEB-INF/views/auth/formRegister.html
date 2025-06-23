@@ -2,55 +2,95 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="/static/css/auth.css">
 </head>
 <body>
-<h1>Form đăng kí</h1>
-<form action="/auth/register" method="post" th:object="${request}">
-    <div>
-        Họ và tên
-        <input type="text" th:field="*{name}">
-        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-    </div>
-    <div>
-        Email
-        <input type="text" th:field="*{email}">
-        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
-    </div>
-    <div>
-        Số điện thoại
-        <input type="text" th:field="*{phone}">
-        <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
-    </div>
-    <div>
-        Giới tính
-        <div>
-            <input type="radio" th:field="*{sex}" value="true" id="male">
-            <label for="male">Nam</label>
+<div class="split-container">
+    <!-- Left side with image -->
+    <div class="image-section">
+        <div class="image-overlay">
+            <h1>Chào mừng bạn</h1>
+            <p>Bắt đầu hành trình của bạn với chúng tôi ngay hôm nay</p>
         </div>
-        <div>
-            <input type="radio" th:field="*{sex}" value="true" id="female">
-            <label for="female">Nữ</label>
-        </div>
-        <p th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></p>
+    </div>
 
+
+    <div class="form-section">
+        <div class="register-container">
+            <div class="register-header">
+                <h2>Đăng ký tài khoản</h2>
+                <p>Điền thông tin bên dưới để tạo tài khoản mới</p>
+            </div>
+
+            <form action="/auth/register" method="post" th:object="${request}" class="register-form">
+                <div class="form-grid">
+                    <!-- Row 1 -->
+                    <div class="form-group">
+                        <label for="name">Họ và tên</label>
+                        <input type="text" id="name" th:field="*{name}" placeholder="Nhập họ tên đầy đủ">
+                        <p class="error-text" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" th:field="*{email}" placeholder="Nhập địa chỉ email">
+                        <p class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="text" id="phone" th:field="*{phone}" placeholder="Nhập số điện thoại">
+                        <p class="error-text" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+                    </div>
+
+                    <!-- Row 4 - Gender -->
+                    <div class="form-group">
+                        <label>Giới tính</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" th:field="*{sex}" value="true" id="male">
+                                <label for="male">Nam</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" th:field="*{sex}" value="false" id="female">
+                                <label for="female">Nữ</label>
+                            </div>
+                        </div>
+                        <p class="error-text" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></p>
+                    </div>
+
+                    <!-- Row 5 -->
+                    <div class="form-group">
+                        <label for="dob">Ngày sinh</label>
+                        <input type="date" id="dob" th:field="*{dob}">
+                        <p class="error-text" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></p>
+                    </div>
+
+                    <!-- Row 6 -->
+                    <div class="form-group">
+                        <label for="password">Mật khẩu</label>
+                        <input type="password" id="password" th:field="*{password}" placeholder="Tạo mật khẩu">
+                        <p class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                    </div>
+
+                    <!-- Row 7 -->
+                    <div class="form-group">
+                        <label for="confirmPassword">Xác nhận mật khẩu</label>
+                        <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Nhập lại mật khẩu">
+                        <p class="error-text" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
+                    </div>
+                </div>
+
+                <button type="submit" class="register-button">Đăng ký</button>
+
+                <p class="login-link">Đã có tài khoản? <a href="/auth/login">Đăng nhập ngay</a></p>
+            </form>
+        </div>
     </div>
-    <div>
-        Ngày sinh
-        <input type="date" th:field="*{dob}"/>
-        <p th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></p>
-    </div>
-    <div>
-        Mật khẩu
-        <input type="text" th:field="*{password}">
-        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
-    </div>
-    <div>
-        Xác nhận mật khẩu
-        <input type="text" th:field="*{confirmPassword}">
-        <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
-    </div>
-    <button type="submit">Đăng kí</button>
-</form>
+</div>
 </body>
 </html>

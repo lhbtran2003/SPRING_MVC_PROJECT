@@ -5,20 +5,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ra.web.dto.course.AddCourseRequest;
 import ra.web.dto.course.UpdateCourseRequest;
 import ra.web.entity.Course;
+import ra.web.entity.Student;
 import ra.web.service.course.ICourseService;
+import ra.web.service.student.IStudentService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
     private ICourseService courseService;
+
+    @Autowired
+    private IStudentService studentService;
 
     @GetMapping("/courses")
     public String showListCourse(@RequestParam(required = false) String name,
@@ -32,13 +36,13 @@ public class AdminController {
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("order", order);
 
-        return "course/listCourse";
+        return "admin/course/listCourse";
     }
 
     @GetMapping("/courses/add")
     public String showFormAddCourse(Model model) {
         model.addAttribute("addCourseRequest", new AddCourseRequest());
-        return "course/formAddCourse";
+        return "admin/course/formAddCourse";
     }
 
     @PostMapping ("/courses/add")
@@ -47,7 +51,7 @@ public class AdminController {
                             Model model) {
         if (bind.hasErrors()) {
             model.addAttribute("addCourseRequest", request);
-            return "course/formAddCourse";
+            return "admin/course/formAddCourse";
         }
         courseService.add(request);
         return "redirect:/admin/courses";
@@ -67,7 +71,8 @@ public class AdminController {
         // Đổ dữ liệu cũ ra
         model.addAttribute("courseId", id);
         model.addAttribute("updateCourseRequest", request);
-        return "course/formUpdateCourse";
+
+        return "admin/course/formUpdateCourse :: modal-content";
 
     }
 
@@ -76,7 +81,7 @@ public class AdminController {
                                BindingResult bind,Model model) {
         if (bind.hasErrors()) {
             model.addAttribute("updateCourseRequest", request);
-            return "course/formUpdateCourse";
+            return "admin/course/formUpdateCourse";
         }
         courseService.update(id, request);
         return "redirect:/admin/courses";
@@ -88,5 +93,10 @@ public class AdminController {
         return "redirect:/admin/courses";
     }
 
-
+    @GetMapping("/students")
+    public String showListStudent(Model model) {
+        List<Student> list = studentService.findAll();
+        model.addAttribute("studentList",list);
+        return "admin/student/listStudent";
+    }
 }

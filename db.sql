@@ -8,5 +8,3 @@ INSERT INTO course values
                        (NULL, NULL, 60, NULL, 'Giảng viên test 1', 'Khóa học test 1'),
                        (NULL, NULL, 90, NULL, 'Giảng viên test 2', 'Khóa học test 2');
 
-DELETE FROM course
-WHERE id = 5;

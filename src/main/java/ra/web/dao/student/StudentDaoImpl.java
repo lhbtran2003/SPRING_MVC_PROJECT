@@ -29,7 +29,7 @@ public class StudentDaoImpl implements IStudentDao {
 
     @Override
     public Student findById(Integer id) {
-        return null;
+        return em.find(Student.class, id);
     }
 
     @Override
