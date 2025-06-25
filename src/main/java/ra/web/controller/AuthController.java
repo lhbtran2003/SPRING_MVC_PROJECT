@@ -1,6 +1,5 @@
 package ra.web.controller;
 
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +28,7 @@ public class AuthController {
 
     // hiện trang đăng nhập (login)
     @GetMapping("/login")
-    public String showFormLogin(Model model) {
+    public String showFormLogin(Model model, HttpSession session) {
         model.addAttribute("request", new LoginRequest());
         return "auth/formLogin";
     }
@@ -56,9 +55,20 @@ public class AuthController {
         session.invalidate();
         HttpSession newSession = request.getSession(true);
         newSession.setAttribute("userLogin", s);
+
+        Boolean role = s.getRole();
+        if (role) {
+            return "redirect:/admin";
+        }
         return "redirect:/";
     }
 
+
+    @PostMapping("/logout")
+    public String processLogout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/auth/login";
+    }
     // hiện trang đăng kí (register)
     @GetMapping("/register")
     public String showFormRegister(Model model) {

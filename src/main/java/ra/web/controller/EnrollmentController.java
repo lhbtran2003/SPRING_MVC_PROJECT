@@ -33,4 +33,15 @@ public class EnrollmentController {
         enrollmentService.add(request);
         return "redirect:/";
     }
+
+    @GetMapping("/enrollment-history")
+    public String enrollmentHistory(Model model) {
+        model.addAttribute("enrollments", enrollmentService.findAll());
+        return "student/enrollmentHistory";
+    }
+
+    @GetMapping ("enrollmentHistory")
+    public String history(@PathVariable(required = false) String name, Model model) {
+        return  null;
+    }
 }

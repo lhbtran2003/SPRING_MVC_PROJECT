@@ -94,4 +94,9 @@ public class CourseDaoImpl implements ICourseDao {
         }
         return query.getResultList();
     }
+
+    @Override
+    public Long totalCourse() {
+        return em.createQuery("SELECT COUNT(*) FROM Course", Long.class).getSingleResult();
+    }
 }

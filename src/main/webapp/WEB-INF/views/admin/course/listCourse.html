@@ -19,7 +19,8 @@
         <h1>Quản lý khóa học</h1>
 
         <!-- Search Form -->
-        <form method="get" action="/admin/courses" class="search-form">
+        <div class="search-form">
+        <form method="get" action="/admin/courses" >
             <input type="text" name="name" placeholder="Tìm tên" th:value="${name}">
 
             <select name="sortBy">
@@ -35,6 +36,8 @@
             <button type="submit" class="search-btn">Tìm kiếm</button>
         </form>
 
+        <a href="/admin/courses/add" class="add-btn">+ Thêm mới</a>
+        </div>
         <!-- Courses Table -->
         <div class="table-container">
             <table class="courses-table">

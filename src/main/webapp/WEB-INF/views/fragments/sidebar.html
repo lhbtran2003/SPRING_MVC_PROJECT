@@ -12,12 +12,18 @@
     </div>
     <nav class="sidebar-nav">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/admin}">Dashboard</a></li>
             <li><a th:href="@{/admin/courses}">Khóa học</a></li>
             <li><a th:href="@{/admin/students}">Học viên</a></li>
             <li><a th:href="@{/admin/enrollment}">Đăng kí</a></li>
         </ul>
+
     </nav>
+    <form action="/auth/logout" method="post">
+        <div class="logout-btn">
+            <a href="/auth/login">Đăng xuất</a>
+        </div>
+    </form>
 </div>
 </body>
 </html>

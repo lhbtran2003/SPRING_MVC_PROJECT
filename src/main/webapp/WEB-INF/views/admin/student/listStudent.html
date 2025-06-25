@@ -16,8 +16,14 @@
         <h1>Quản lí học viên</h1>
 
         <!-- Search Form -->
-        <form method="get" action="/admin/courses" class="search-form">
+        <form method="get" action="/admin/students" class="search-form">
             <input type="text" name="name" placeholder="Tìm tên" th:value="${name}">
+
+            <select name="searchBy">
+                <option value="name" th:selected="${searchBy == null or searchBy == 'name'}">Tên</option>
+                <option value="id" th:selected="${searchBy == 'id'}">ID</option>
+                <option value="email" th:selected="${searchBy == 'email'}">Email</option>
+            </select>
 
             <select name="sortBy">
                 <option value="id" th:selected="${sortBy == 'id'}">ID</option>
@@ -54,8 +60,10 @@
                     <td th:text="${s.dob}"></td>
                     <td th:text="${s.sex == null ? 'Chưa rõ' : (s.sex ? 'Nam' : 'Nữ')}"></td>
                     <td class="action-buttons">
-                        <button type="button" class="btn btn-primary">Sửa</button>
-                        <button>Xóa</button>
+                        <form method="post" action="/admin/change-status">
+                            <input type="hidden" name="id" th:value="${s.id}">
+                            <button type="submit" th:text="${s.status ? 'On' : 'Off'}" th:classappend="${s.status ? 'btn btn-warning' : 'btn btn-dark'}"></button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>

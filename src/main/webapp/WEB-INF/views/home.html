@@ -2,7 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Trang chủ</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{static/css/course-card.css}">
   <link rel="stylesheet" href="/static/css/navbar.css">
 
 </head>
@@ -10,7 +12,41 @@
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <main>
-  <!-- Add your content here -->
+
+  <h2>Tất cả khóa học</h2>
+  <div class="container mt-4">
+    <!-- Search Form -->
+    <div class="search-container mb-4">
+      <form method="get" action="/all-course" class="search-form">
+        <div class="input-group">
+          <input type="text" class="form-control" name="name" placeholder="Tìm kiếm khóa học..." th:value="${name}">
+          <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="courses-grid">
+      <div class="course-card" th:each="c : ${listCourse}">
+        <div class="course-image">
+          <img th:src="${c.getImage()}" alt="Course image">
+        </div>
+        <div class="course-info">
+          <h3 th:text="${c.name}"></h3>
+          <p class="instructor" th:text="'Giảng viên: ' + ${c.instructor}"></p>
+          <p class="duration" th:text="'Thời lượng: ' + ${c.duration} + ' giờ'"></p>
+        </div>
+        <div class="course-actions">
+          <form action="/all-course/detail" method="get">
+            <input type="hidden" name="name" th:value="${c.name}"/>
+            <button type="submit" class="detail-btn">Xem chi tiết</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </main>
 </body>
 </html>

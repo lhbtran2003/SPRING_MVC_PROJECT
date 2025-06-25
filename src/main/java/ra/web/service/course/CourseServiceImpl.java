@@ -90,4 +90,9 @@ public class CourseServiceImpl implements ICourseService{
     public List<Course> searchAndSort(String name, String sortBy, String order) {
         return courseDao.searchAndSort(name, sortBy, order);
     }
+
+    @Override
+    public Long getCount() {
+        return courseDao.totalCourse();
+    }
 }

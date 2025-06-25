@@ -12,4 +12,5 @@ public interface ICourseDao extends IGenericDao<Course, Integer> {
 
     List<Course> searchAndSort(String name, String sortBy, String sortOrder);
 
+    Long totalCourse();
 }

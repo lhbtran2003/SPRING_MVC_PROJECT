@@ -6,6 +6,7 @@ import ra.web.dao.student.IStudentDao;
 import ra.web.dto.auth.RegisterRequest;
 import ra.web.entity.Student;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,6 +40,19 @@ public class StudentServiceImpl implements IStudentService {
 
     }
 
+    @Override
+    public List<Student> searchAndSort(String searchBy, String name, String sortBy, String order) {
+        return studentDao.searchAndSort(searchBy, name, sortBy, order);
+    }
 
+    @Transactional
+    @Override
+    public void changeStatus(Integer id) {
+        studentDao.changeStatus(id);
+    }
 
+    @Override
+    public Long getCount() {
+        return studentDao.totalStudent();
+    }
 }

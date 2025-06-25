@@ -6,6 +6,7 @@ import ra.web.dao.course.ICourseDao;
 import ra.web.dao.enrollment.IEnrollmentDao;
 import ra.web.dao.student.IStudentDao;
 import ra.web.dto.enrollment.AddEnrollmentRequest;
+import ra.web.dto.enrollment.EnrollmentDTO;
 import ra.web.entity.Course;
 import ra.web.entity.Enrollment;
 import ra.web.entity.Student;
@@ -52,5 +53,10 @@ public class EnrollmentServiceImpl implements IEnrollmentService {
     @Override
     public void delete(Integer id) {
 
+    }
+
+    @Override
+    public List<EnrollmentDTO> getEnrollmentsByEnrollmentId() {
+        return enrollmentDao.getCountStudentByCourse();
     }
 }

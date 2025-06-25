@@ -1,12 +1,12 @@
 package ra.web.dao.enrollment;
 
 import org.springframework.stereotype.Repository;
+import ra.web.dto.enrollment.EnrollmentDTO;
 import ra.web.entity.Enrollment;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -38,5 +38,10 @@ public class EnrollmentDaoImpl implements IEnrollmentDao {
     @Override
     public void delete(Integer id) {
 
+    }
+
+    @Override
+    public List<EnrollmentDTO> getCountStudentByCourse() {
+        return em.createQuery("SELECT EnrollmentDTO( e.course.name,COUNT(e.student)) FROM Enrollment e GROUP BY e.course.name", EnrollmentDTO.class).getResultList();
     }
 }

@@ -45,6 +45,9 @@ public class Student {
     @Column(nullable = false, columnDefinition = "BIT")
     private Boolean role; // Student = false (0), Admin = true (1)
 
+    @Column(nullable = false, columnDefinition = "BIT")
+    private Boolean status; // Active = true (1), Inactive = false (0)
+
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Enrollment> enrollments;
 }

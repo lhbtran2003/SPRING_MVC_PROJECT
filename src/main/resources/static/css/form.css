@@ -1,6 +1,6 @@
 /* ===== FORM LAYOUT ===== */
 .form-container {
-    margin-left: 100px; /* Same as sidebar width */
+    margin-left: 250px; /* Same as sidebar width */
     padding: 2rem;
     background-color: #f8f9fa;
     min-height: 100vh;

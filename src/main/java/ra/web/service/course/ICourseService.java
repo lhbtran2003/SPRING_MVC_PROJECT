@@ -11,5 +11,6 @@ public interface ICourseService extends IGenericService<Course, Integer, AddCour
     boolean isExistName(String name);
     List<Course> findByName(String name);
     List<Course> searchAndSort(String name, String sortBy, String order);
+    Long getCount();
 
 }
