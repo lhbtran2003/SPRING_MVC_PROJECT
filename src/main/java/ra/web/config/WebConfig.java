@@ -88,7 +88,7 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
                 .addPathPatterns("/admin/**")
                 .addPathPatterns("/enrollment")
                 .addPathPatterns("")
-                .addPathPatterns("/information");
+                .addPathPatterns("/personal-information");
     }
 
     @Override

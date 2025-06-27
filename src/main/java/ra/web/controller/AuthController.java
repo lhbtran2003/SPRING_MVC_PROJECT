@@ -35,7 +35,7 @@ public class AuthController {
 
     // xu lí đăng nhập
     @PostMapping("/login")
-    public String processFormLogin(@Valid @ModelAttribute("request") LoginRequest loginRequest, BindingResult bind, Model model, HttpSession session) {
+    public String processFormLogin(@Valid @ModelAttribute() LoginRequest loginRequest, BindingResult bind, Model model, HttpSession session) {
         if (bind.hasErrors()) {
             model.addAttribute("request", loginRequest);
             return "auth/formLogin";
@@ -69,6 +69,7 @@ public class AuthController {
         session.invalidate();
         return "redirect:/auth/login";
     }
+
     // hiện trang đăng kí (register)
     @GetMapping("/register")
     public String showFormRegister(Model model) {

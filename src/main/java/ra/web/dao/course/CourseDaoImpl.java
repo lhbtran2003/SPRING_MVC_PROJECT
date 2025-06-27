@@ -72,23 +72,15 @@ public class CourseDaoImpl implements ICourseDao {
 
     @Override
     public List<Course> searchAndSort(String name, String sortBy, String sortOrder) {
-        String jpql = "SELECT c FROM Course c";
-        List<String> conditions = new ArrayList<String>();
-
+        StringBuilder jpql = new StringBuilder("SELECT c FROM Course c");
         if (name != null && !name.trim().isEmpty()) {
-            conditions.add("c.name LIKE :name");
+            jpql.append(" WHERE c.name LIKE :name");
         }
-        if (!conditions.isEmpty()) {
-            jpql = jpql + " WHERE " + String.join(" AND ", conditions);
-        }
+        String sortFiled = sortBy != null && sortBy.trim().equals("id") ? "id" : "name";
+        String direction = sortOrder != null && sortOrder.trim().equals("asc") ? "asc" : "desc";
+        jpql.append(" ORDER BY ").append(sortFiled).append(" ").append(direction);
+        TypedQuery<Course> query = em.createQuery(jpql.toString(), Course.class);
 
-        // Sắp xếp
-        String sortField = (sortBy != null && sortBy.equals("name")) ? "c.name" : "c.id";
-        String direction = (sortOrder != null && sortOrder.equals("desc")) ? "desc" : "asc";
-
-        jpql = jpql + " ORDER BY " + sortField + " " + direction;
-
-        TypedQuery<Course> query = em.createQuery(jpql, Course.class);
         if (name != null && !name.trim().isEmpty()) {
             query.setParameter("name", "%" + name + "%");
         }

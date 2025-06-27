@@ -8,6 +8,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class EnrollmentDTO {
+    private Integer courseId;
     private String courseName;
+    private String courseImg;
+    private Integer courseDuration;
     private Long totalStudents;
 }

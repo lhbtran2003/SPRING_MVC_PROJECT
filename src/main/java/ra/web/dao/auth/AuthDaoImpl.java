@@ -6,6 +6,7 @@ import ra.web.dto.auth.LoginRequest;
 import ra.web.entity.Student;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -38,10 +39,13 @@ public class AuthDaoImpl implements IAuthDao {
 
     @Override
     public Student login(LoginRequest loginRequest) {
-        return em.createQuery("SELECT s FROM Student s WHERE s.email = :email AND s.password = :password", Student.class)
-                .setParameter("email", loginRequest.getEmail())
-                .setParameter("password", loginRequest.getPassword())
-                .getSingleResult();
+        try {
+            return em.createQuery("SELECT s FROM Student s WHERE s.email = :email AND s.password = :password", Student.class)
+                    .setParameter("email", loginRequest.getEmail())
+                    .setParameter("password", loginRequest.getPassword())
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
-
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import ra.web.dao.auth.IAuthDao;
 
 @Component
-public class UniqueEmailValidator extends AbstractUniqueValidator<UniqueEmail> {
+public class UniqueEmailValidator extends AbstractUniqueValidator<UniqueEmail, String> {
     @Autowired
     private IAuthDao studentDao;
 

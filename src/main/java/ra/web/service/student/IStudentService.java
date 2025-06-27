@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IStudentService extends IGenericService<Student,Integer, RegisterRequest, Student> {
     List<Student> searchAndSort(String searchBy, String name, String sortBy, String order);
-void changeStatus(Integer id);
+    void changeStatus(Integer id);
     Long getCount();
 
 }

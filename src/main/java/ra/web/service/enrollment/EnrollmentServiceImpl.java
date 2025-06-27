@@ -7,13 +7,13 @@ import ra.web.dao.enrollment.IEnrollmentDao;
 import ra.web.dao.student.IStudentDao;
 import ra.web.dto.enrollment.AddEnrollmentRequest;
 import ra.web.dto.enrollment.EnrollmentDTO;
+import ra.web.dto.enrollment.UpdateEnrollmentRequest;
 import ra.web.entity.Course;
 import ra.web.entity.Enrollment;
+import ra.web.entity.Status;
 import ra.web.entity.Student;
-import ra.web.service.course.ICourseService;
-import ra.web.service.student.IStudentService;
 
-import java.util.Collections;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -27,7 +27,7 @@ public class EnrollmentServiceImpl implements IEnrollmentService {
 
     @Override
     public List<Enrollment> findAll() {
-        return Collections.emptyList();
+        return enrollmentDao.findAll();
     }
 
     @Override
@@ -37,6 +37,7 @@ public class EnrollmentServiceImpl implements IEnrollmentService {
        Student student = studentDao.findById(request.getStudentId());
        newEnrollment.setCourse(course);
        newEnrollment.setStudent(student);
+       newEnrollment.setStatus(Status.WAITING);
        enrollmentDao.save(newEnrollment);
     }
 
@@ -45,9 +46,14 @@ public class EnrollmentServiceImpl implements IEnrollmentService {
         return null;
     }
 
+    @Transactional
     @Override
-    public void update(Integer id, Enrollment request) {
-
+    public void update(Integer id, UpdateEnrollmentRequest request) {
+       Enrollment enrollment = enrollmentDao.findById(id);
+       if (enrollment != null) {
+           enrollment.setStatus(request.getStatus());
+           enrollmentDao.update(enrollment);
+       }
     }
 
     @Override
@@ -56,7 +62,30 @@ public class EnrollmentServiceImpl implements IEnrollmentService {
     }
 
     @Override
-    public List<EnrollmentDTO> getEnrollmentsByEnrollmentId() {
+    public List<EnrollmentDTO> getTotalStudentByCourse() {
         return enrollmentDao.getCountStudentByCourse();
+    }
+
+    @Override
+    public List<EnrollmentDTO> getFiveBestSellerCourse() {
+        return enrollmentDao.getFiveCourseBestSeller();
+    }
+
+    @Override
+    public boolean isExitEnrollment(AddEnrollmentRequest request) {
+        for (Enrollment enrollment : enrollmentDao.findAll()) {
+            if (enrollment.getStudent().getId().equals(request.getStudentId()) &&
+                    enrollment.getCourse().getId().equals(request.getCourseId()) &&
+                    !enrollment.getStatus().equals(Status.DENIED)
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<Enrollment> searchAndSort(Integer studentId, Status status, String name) {
+        return enrollmentDao.searchAndSort(studentId,status, name);
     }
 }

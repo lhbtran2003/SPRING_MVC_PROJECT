@@ -8,13 +8,17 @@ import org.springframework.web.bind.annotation.*;
 import ra.web.dto.course.AddCourseRequest;
 import ra.web.dto.course.CourseDTO;
 import ra.web.dto.course.UpdateCourseRequest;
+import ra.web.dto.enrollment.EnrollmentDTO;
+import ra.web.dto.enrollment.UpdateEnrollmentRequest;
 import ra.web.dto.student.StudentDTO;
 import ra.web.entity.Course;
+import ra.web.entity.Status;
 import ra.web.entity.Student;
 import ra.web.service.course.ICourseService;
 import ra.web.service.enrollment.IEnrollmentService;
 import ra.web.service.student.IStudentService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,8 +37,14 @@ public class AdminController {
     private IEnrollmentService enrollmentService;
 
     @GetMapping()
-    public String admin(Model model) {
-        model.addAttribute("list", enrollmentService)
+    public String admin(Model model, HttpSession session) {
+        model.addAttribute("totalStudent", studentService.getCount());
+        model.addAttribute("totalCourse", courseService.getCount());
+        List<EnrollmentDTO> list =  enrollmentService.getTotalStudentByCourse();
+        model.addAttribute("totalStudentByCourse", list);
+        model.addAttribute("bestSeller", enrollmentService.getFiveBestSellerCourse());
+        Student student = (Student) session.getAttribute("userLogin");
+        model.addAttribute("student", student);
         return "/admin/dashboard/dashboard";
     }
 
@@ -140,9 +150,40 @@ public class AdminController {
         return "admin/student/listStudent";
     }
 
-    @PostMapping("/change-status")
+    @PostMapping("/student/change-status")
     public String changeStatus(@RequestParam int id) {
         studentService.changeStatus(id);
         return "redirect:/admin/students";
+    }
+
+    @GetMapping("/enrollments")
+    public String showListEnrollment (Model model,
+                                      @RequestParam(required = false) Integer id,
+                                      @RequestParam(required = false) String name,
+                                      @RequestParam(required = false) String status) {
+        Status status1 = null;
+        if (status != null) {
+            if (status.equals("CONFIRM")) {
+                status1 = Status.CONFIRM;
+            } else if (status.equals("DENIED")) {
+                status1 = Status.DENIED;
+            } else if (status.equals("CANCEL")) {
+                status1 = Status.CANCEL;
+            } else if (status.equals("WAITING")) {
+                status1 = Status.WAITING;
+            }
+        }
+        model.addAttribute("enrollments", enrollmentService.searchAndSort(id, status1, name));
+        return "admin/enrollment/listEnrollment";
+    }
+
+    @PostMapping("/enrollment/approve")
+    public String approveEnrollment(@RequestParam Integer enrollmentApprovedId,
+                                    @RequestParam String status,
+                                    Model model) {
+        UpdateEnrollmentRequest request = new UpdateEnrollmentRequest();
+        request.setStatus(status.equals("CONFIRM") ? Status.valueOf("CONFIRM") : Status.valueOf(status));
+        enrollmentService.update(enrollmentApprovedId, request);
+        return "redirect:/admin/enrollments";
     }
 }

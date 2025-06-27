@@ -60,7 +60,7 @@
                     <td th:text="${s.dob}"></td>
                     <td th:text="${s.sex == null ? 'Chưa rõ' : (s.sex ? 'Nam' : 'Nữ')}"></td>
                     <td class="action-buttons">
-                        <form method="post" action="/admin/change-status">
+                        <form method="post" action="/admin/student/change-status">
                             <input type="hidden" name="id" th:value="${s.id}">
                             <button type="submit" th:text="${s.status ? 'On' : 'Off'}" th:classappend="${s.status ? 'btn btn-warning' : 'btn btn-dark'}"></button>
                         </form>

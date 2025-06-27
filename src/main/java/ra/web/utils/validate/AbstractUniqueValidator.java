@@ -6,10 +6,10 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.lang.annotation.Annotation;
 
-public abstract class AbstractUniqueValidator<T extends Annotation> implements ConstraintValidator<T, String> {
-    protected abstract boolean isValueExisted(String value);
+public abstract class AbstractUniqueValidator<T extends Annotation, V> implements ConstraintValidator<T, V> {
+    protected abstract boolean isValueExisted(V value);
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(V s, ConstraintValidatorContext constraintValidatorContext) {
         return s == null || !isValueExisted(s);
     }
 }

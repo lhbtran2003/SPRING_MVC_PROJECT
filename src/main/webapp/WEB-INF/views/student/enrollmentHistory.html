@@ -4,40 +4,63 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/enrollment.css">
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<h2>Các khóa học đã đăng kí</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Khóa học</th>
-        <th>Ngày đăng kí</th>
-        <th>Trạng thái</th>
-        <th>Thao tác</th>
-    </tr>
-    </thead>
-    <tbody>
-<!--    <tr th:each="e : ${enrollments}">-->
-<!--        <td th:text="${e.course.name}"></td>-->
-<!--        <td th:text="${e.registedAt}"></td>-->
-<!--        <td th:text="${e.status}"></td>-->
-<!--        <td>-->
-<!--            <button type="submit">Hủy đăng kí</button>-->
-<!--        </td>-->
-<!--    </tr>-->
-    <tr>
-        <td>Khóa học test 1</td>
-        <td>20/03/2025</td>
-        <td>Đang học</td>
-        <td>
-            <button type="button">Hủy</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div>
+    <h2>Các khóa học đã đăng kí</h2>
 
+    <form class="filter-form" action="/enrollment/history" method="get">
+        <select name="status">
+            <option value="" th:selected="${status == null or status == ''}">Chọn trạng thái</option>
+            <option value="CONFIRM" th:selected="${status == 'CONFIRM'}">Đang học</option>
+            <option value="WAITING" th:selected="${status == 'WAITING'}">Chờ duyệt</option>
+            <option value="CANCEL" th:selected="${status == 'CANCEL'}">Đã hủy</option>
+            <option value="DENIED" th:selected="${status == 'DENIED'}">Bị từ chối</option>
+        </select>
+
+        <input type="text" name="name" placeholder="Tìm tên" th:value="${name}">
+        <button type="submit">Tìm kiếm</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Mã khóa học</th>
+            <th>Tên khóa học</th>
+            <th>Thời lượng (giờ)</th>
+            <th>Giáo viên</th>
+            <th>Hình ảnh</th>
+            <th>Ngày đăng kí</th>
+            <th>Trạng thái</th>
+            <th>Tác vụ</th>
+        </tr>
+        </thead>
+        <tbody th:if="${!enrollments.isEmpty()}">
+        <tr th:each="enrollment : ${enrollments}">
+            <td th:text="${enrollment.course.id}"></td>
+            <td th:text="${enrollment.course.name}"></td>
+            <td th:text="${enrollment.course.duration}"></td>
+            <td th:text="${enrollment.course.instructor}"></td>
+            <td><img th:src="${enrollment.course.image}" class="course-img" alt="Course Image"></td>
+            <td th:text="${#temporals.format(enrollment.registedAt, 'dd/MM/yyyy')}"></td>
+            <td th:text="${enrollment.status}"></td>
+            <td>
+                <form action="/enrollment/approve" method="post">
+                    <input type="hidden" name="enrollmentApprovedId" th:value="${enrollment.id}">
+                    <form action="/enrollment/cancel" method="post">
+                        <input type="hidden" name="enrollmentCanceledId" th:value="${enrollment.id}">
+                        <button >Hủy đăng ký</button>
+                    </form>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${enrollments.isEmpty()}" th:text="'Chưa đăng kí khóa học nào'"></div>
+
+</div>
 </body>
 </html>

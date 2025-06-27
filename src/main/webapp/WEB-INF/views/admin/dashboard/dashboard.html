@@ -3,16 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-  <link rel="stylesheet" href="/static/css/sidebar.css">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/sidebar.css">
+    <link rel="stylesheet" href="/static/css/revenue.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
+
 <body>
 <div class="admin-layout">
-  <div th:replace="~{fragments/sidebar :: sidebar}"></div>
-  <div>
-    đây là trang thống ke
-  </div>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Student Statistics by Course</h1>
+            <div class="user-info">
+                <div class="user-avatar">AD</div>
+                <span th:text="${student.name}"></span>
+            </div>
+        </div>
+
+        <!-- Top Content Area -->
+        <div class="content-top">
+            <div class="stat-card">
+                <h3>Số lượng khóa học</h3>
+                <p th:text="${totalCourse}"></p>
+            </div>
+            <div class="stat-card">
+                <h3>Số lượng học viên</h3>
+                <p th:text="${totalStudent}"></p>
+            </div>
+            <div class="stat-card">
+                <h3>Số lượng khóa học được đăng kí</h3>
+                <p>Tạm chưa có dữ liệu</p>
+            </div>
+
+        </div>
+
+        <!-- Bottom Content Area (larger section) -->
+        <div class="content-bottom">
+            <div class="table-container">
+                <h3>Course Overview</h3>
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Hình ảnh</th>
+                        <th>Tên khóa học</th>
+                        <th>Thời lượng</th>
+                        <th>Số lượng học viên</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Your 5-column table data here -->
+                    <tr th:each="a : ${totalStudentByCourse}">
+                        <td th:text="${a.courseId}"></td>
+                        <td><img th:src="${a.courseImg}" alt="N/A" class="course-img"></td>
+                        <td th:text="${a.courseName}"></td>
+                        <td th:text="${a.courseDuration}"></td>
+                        <td th:text="${a.totalStudents}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container-right">
+                <h3>Top 5 Best Sellers</h3>
+                <ul class="top-sellers-list">
+                    <li class="top-seller-item" th:each="b : ${bestSeller}">
+                        <span class="course-name" th:text="${b.courseName}">Basic Web Programming</span>
+                        <span class="student-count" th:text="${b.totalStudents}">50</span>
+                    </li>
+                </ul>
+        </div>
+    </div>
 </div>
 </body>
 </html>
