@@ -40,8 +40,8 @@ public class CourseDaoImpl implements ICourseDao {
 
     @Override
     public boolean isExistName(String name) {
-        Long count =  em.createQuery("SELECT COUNT(*) FROM Course c WHERE c.name = :name", Long.class)
-                .setParameter("name", name )
+        Long count = em.createQuery("SELECT COUNT(*) FROM Course c WHERE c.name = :name", Long.class)
+                .setParameter("name", name)
                 .getSingleResult();
         return count > 0;
     }
@@ -56,7 +56,7 @@ public class CourseDaoImpl implements ICourseDao {
     }
 
     @Override
-    public List<Course> getCourseByName(String name) {
+    public Course getCourseByName(String name) {
         StringBuilder jpql = new StringBuilder("SELECT c FROM Course c");
 
         if (name != null && !name.trim().isEmpty()) {
@@ -67,24 +67,51 @@ public class CourseDaoImpl implements ICourseDao {
         if (name != null && !name.trim().isEmpty()) {
             query.setParameter("name", "%" + name + "%");
         }
+        return query.getSingleResult();
+    }
+
+    @Override
+    public List<Course> getListCourseByName(String name, int page, int size) {
+        StringBuilder jpql = new StringBuilder("SELECT c FROM Course c");
+
+        if (name != null && !name.trim().isEmpty()) {
+            jpql.append(" WHERE c.name LIKE :name");
+        }
+
+        TypedQuery<Course> query = em.createQuery(jpql.toString(), Course.class);
+        if (name != null && !name.trim().isEmpty()) {
+            query.setParameter("name", "%" + name + "%");
+        }
+        query.setFirstResult(page * size).setMaxResults(size);
         return query.getResultList();
     }
 
     @Override
-    public List<Course> searchAndSort(String name, String sortBy, String sortOrder) {
+    public List<Course> searchAndSort(String keyword, String sortBy, String direction, int page, int size) {
         StringBuilder jpql = new StringBuilder("SELECT c FROM Course c");
-        if (name != null && !name.trim().isEmpty()) {
-            jpql.append(" WHERE c.name LIKE :name");
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            jpql.append(" WHERE c.name LIKE :keyword");
         }
         String sortFiled = sortBy != null && sortBy.trim().equals("id") ? "id" : "name";
-        String direction = sortOrder != null && sortOrder.trim().equals("asc") ? "asc" : "desc";
+        String order = direction != null && direction.trim().equals("asc") ? "asc" : "desc";
+
         jpql.append(" ORDER BY ").append(sortFiled).append(" ").append(direction);
         TypedQuery<Course> query = em.createQuery(jpql.toString(), Course.class);
 
-        if (name != null && !name.trim().isEmpty()) {
-            query.setParameter("name", "%" + name + "%");
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            query.setParameter("keyword", "%" + keyword + "%");
         }
+        query.setFirstResult(page * size).setMaxResults(size);
         return query.getResultList();
+    }
+
+    @Override
+    public Long totalPage(int size, String keyword) {
+        String sql = "SELECT CEILING(COUNT(c)/:size) FROM Course c WHERE c.name LIKE :keyword";
+        return Long.valueOf(em.createQuery(sql, Integer.class)
+                .setParameter("size", Long.valueOf(size))
+                .setParameter("keyword", "%" + keyword + "%")
+                .getSingleResult());
     }
 
     @Override

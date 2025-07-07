@@ -17,22 +17,16 @@
 
         <!-- Search Form -->
         <form method="get" action="/admin/students" class="search-form">
-            <input type="text" name="name" placeholder="Tìm tên" th:value="${name}">
-
-            <select name="searchBy">
-                <option value="name" th:selected="${searchBy == null or searchBy == 'name'}">Tên</option>
-                <option value="id" th:selected="${searchBy == 'id'}">ID</option>
-                <option value="email" th:selected="${searchBy == 'email'}">Email</option>
-            </select>
+            <input type="text" name="keyword" placeholder="Tìm tên" th:value="${page.getKeyword()}">
 
             <select name="sortBy">
-                <option value="id" th:selected="${sortBy == 'id'}">ID</option>
-                <option value="name" th:selected="${sortBy == 'name'}">Tên</option>
+                <option value="id" th:selected="${page.getSortBy() == 'id'}">ID</option>
+                <option value="name" th:selected="${page.getSortBy() == 'name'}">Tên</option>
             </select>
 
-            <select name="order">
-                <option value="asc" th:selected="${order == 'asc'}">Tăng</option>
-                <option value="desc" th:selected="${order == 'desc'}">Giảm</option>
+            <select name="direction">
+                <option value="asc" th:selected="${page.getDirection() == 'asc'}">Tăng</option>
+                <option value="desc" th:selected="${page.getDirection() == 'desc'}">Giảm</option>
             </select>
 
             <button type="submit" class="search-btn">Tìm kiếm</button>
@@ -52,7 +46,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="s : ${studentList}">
+                <tr th:each="s : ${page.getContent()}">
                     <td th:text="${s.id}"></td>
                     <td th:text="${s.name}"></td>
                     <td th:text="${s.email}"></td>
@@ -68,6 +62,29 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="mt-3">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li th:class="|page-item ${page.currentPage<=0?'disable':''}|">
+                        <a class="page-link" th:href="|/admin/students?page=${page.currentPage+-1}&sortBy=${page.sortBy}&direction=${page.direction}&keyword=${page.keyword}|" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${page.totalPages!=0}"
+                        th:each="p,loop : ${#numbers.sequence(1,page.totalPages)} "
+                        th:class="|page-item ${page.currentPage==loop.index?'active':''}|">
+                        <a class="page-link" th:href="|/admin/students?page=${loop.index}&sortBy=${page.sortBy}&direction=${page.direction}&keyword=${page.keyword}|" th:text="${p}"></a></li>
+
+                    <li th:class="|page-item ${page.currentPage+1 >= page.totalPages ? 'disable' : ''}|">
+                        <a class="page-link" th:href="|/admin/students?page=${page.currentPage+1}&sortBy=${page.sortBy}&direction=${page.direction}&keyword=${page.keyword}|" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

@@ -21,9 +21,8 @@
                 <p>Clarity gives you the blocks and components you need to create a truly professional website.</p>
             </div>
 
-            <div class="error-messages">
-                <h2 th:if="${errorEmail != null}" th:text="${errorEmail}"></h2>
-                <h2 th:if="${errorPassword != null}" th:text="${errorPassword}"></h2>
+            <div class="error-messages" th:if="${error != null}">
+                <h2 th:if="${error != null}" th:text="${error}"></h2>
             </div>
 
             <form action="/auth/login" method="post" th:object="${request}" class="login-form">
@@ -37,7 +36,7 @@
 
                 <div class="form-group">
                     <label for="password">Mật khẩu</label>
-                    <input id="password" type="text" th:field="*{password}">
+                    <input id="password" type="password" th:field="*{password}">
                     <p class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
                 </div>
 

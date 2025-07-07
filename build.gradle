@@ -41,7 +41,8 @@ dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
     // https://mvnrepository.com/artifact/com.cloudinary/cloudinary-http44
     implementation group: 'com.cloudinary', name: 'cloudinary-http44', version: '1.32.2'
-
+    // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
+    implementation 'org.mindrot:jbcrypt:0.4'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

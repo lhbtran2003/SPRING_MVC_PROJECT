@@ -18,7 +18,7 @@
 
         <!-- Search Form -->
         <div class="search-form">
-            <form method="get" action="/admin/enrollments/" >
+            <form method="get" action="/admin/enrollments/">
                 <input type="text" name="name" placeholder="Tìm tên" th:value="${name}">
 
                 <select name="status">
@@ -46,16 +46,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="e : ${enrollments}">
+                <tr th:each="e : ${page.content}">
                     <td th:text="${e.id}"></td>
                     <td th:text="${e.student.name}"></td>
                     <td th:text="${e.course.name}"></td>
-                    <td th:text="${e.registedAt}"></td>
+                    <td th:text="${#temporals.format(e.registedAt, 'dd/MM/yyyy')}"></td>
                     <td th:text="${e.status}"></td>
                     <td class="action-buttons">
                         <form action="/admin/enrollment/approve" method="post">
                             <input type="hidden" name="enrollmentApprovedId" th:value="${e.id}">
-                            <select name="status" th:if="${e.status.equals('WAITING')}" onchange="this.form.submit()">
+                            <select name="status" th:if="${e.status.name() == 'WAITING'}" onchange="this.form.submit()">
                                 <option value="" th:selected="${status == null}">Duyệt</option>
                                 <option value="CONFIRM" th:selected="${status == 'CONFIRM'}">Xác nhận</option>
                                 <option value="DENIED" th:selected="${status == 'DENIED'}">Từ chối</option>
@@ -65,6 +65,38 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!--    Pagination-->
+        <div class="mt-3">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li th:class="|page-item ${page.currentPage<=0?'disable':''}|">
+                        <a class="page-link"
+                           th:href="|/admin/enrollments?page=${page.currentPage+-1}&name=${page.keyword}&status=${page.sortBy}|"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${page.totalPages!=0}"
+                        th:each="p,loop : ${#numbers.sequence(1,page.totalPages)} "
+                        th:class="|page-item ${page.currentPage==loop.index?'active':''}|">
+                        <a class="page-link"
+                           th:href="|/admin/enrollments?page=${loop.index}&name=${page.keyword}&status=${page.sortBy}|"
+                           th:text="${p}">
+                        </a>
+                    </li>
+
+                    <li th:class="|page-item ${page.currentPage+1 >= page.totalPages ? 'disable' : ''}|">
+                        <a class="page-link"
+                           th:href="|/admin/enrollments?page=${page.currentPage+1}&name=${page.keyword}&status=${page.sortBy}|"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

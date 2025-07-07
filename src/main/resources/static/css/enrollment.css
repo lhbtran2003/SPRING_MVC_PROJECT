@@ -1,134 +1,226 @@
-/* enrollment.css - Only styles for content below navbar */
-
-/* Main content container */
-body > div:not(:first-child) {
-    padding: 20px;
+/* Modern Light Enrollment History Styles */
+:root {
+    --primary: #4a6fa5;
+    --primary-light: #6b8cae;
+    --accent: #ff7e5f;
+    --background: #f8f9fa;
+    --card-bg: #ffffff;
+    --text: #333333;
+    --text-light: #666666;
+    --border: #e0e0e0;
+    --success: #4CAF50;
+    --warning: #FFC107;
+    --error: #e74c3c;
+}
+main {
+    padding: 2rem 1.5rem;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 100px auto;  /* Canh giữa trang */
 }
 
-/* Page title */
-h2 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    font-weight: 600;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-/* Filter form styling */
-.filter-form {
+/* Page Header */
+.page-header {
+    margin-bottom: 2rem;
     display: flex;
-    gap: 15px;
-    margin-bottom: 25px;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0;
+}
+
+/* Filter Form */
+.filter-form {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap; /* ❗ Ngăn form bị xuống dòng */
+    align-items: center;
+    gap: 1rem;
 }
 
 .filter-form select,
 .filter-form input {
-    padding: 8px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 14px;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    transition: all 0.2s;
+
+    flex: 1;
+    min-width: 220px;
+    max-width: 100%;
+}
+
+.filter-form select {
     min-width: 180px;
+    flex: 0 0 200px;
 }
 
 .filter-form input {
-    flex-grow: 1;
-    max-width: 300px;
+    flex: 1;
+    min-width: 200px;
+    /* Input co giãn chiếm khoảng trống còn lại */
+    max-width: none; /* Bỏ giới hạn */
+}
+
+.filter-form input:focus,
+.filter-form select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.1);
 }
 
 .filter-form button {
-    padding: 8px 16px;
-    background-color: #3498db;
+    padding: 0.7rem 1.5rem;
+    background-color: var(--primary);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    font-weight: 500;
+    transition: all 0.2s;
+
 }
 
 .filter-form button:hover {
-    background-color: #2980b9;
+    background-color: var(--primary-light);
+    transform: translateY(-1px);
 }
 
-/* Table styling */
-table {
+/* Enrollment Table */
+.enrollment-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
     overflow: hidden;
 }
 
-th {
-    background-color: #f8f9fa;
-    color: #495057;
-    padding: 12px 15px;
+.enrollment-table th {
+    background-color: var(--primary);
+    color: white;
+    padding: 1rem;
     text-align: center;
-    font-weight: 600;
-    border-bottom: 2px solid #e9ecef;
+    font-weight: 500;
 }
 
-td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #e9ecef;
-    vertical-align: middle;
-    text-align: center;
-
+.enrollment-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: center;
 }
 
-tr:hover {
-    background-color: #f8f9fa;
+.enrollment-table tr:last-child td {
+    border-bottom: none;
 }
 
-/* Course image */
+.enrollment-table tr:hover {
+    background-color: rgba(74, 111, 165, 0.03);
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-CONFIRM {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--success);
+}
+
+.status-WAITING {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: var(--warning);
+}
+
+.status-CANCEL,
+.status-DENIED {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--error);
+}
+
+/* Course Image */
 .course-img {
     width: 80px;
     height: 60px;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 4px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border);
 }
 
-
-
-/* Action button */
+/* Action Buttons */
 .action-btn {
-    padding: 6px 12px;
+    padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 500;
     transition: all 0.2s;
 }
 
 .btn-cancel {
-    background-color: #e74c3c;
+    background-color: var(--error);
     color: white;
 }
 
 .btn-cancel:hover {
     background-color: #c0392b;
+    transform: translateY(-1px);
 }
 
-/* Responsive adjustments */
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    color: var(--text-light);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
+    .enrollment-table {
+        display: block;
+        overflow-x: auto;
+    }
+
     .filter-form {
         flex-direction: column;
-        align-items: stretch;
     }
 
     .filter-form input,
     .filter-form select {
         max-width: 100%;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    body > div:not(:first-child) {
+        padding: 1.5rem 1rem;
     }
 
-    table {
-        display: block;
-        overflow-x: auto;
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .enrollment-table th,
+    .enrollment-table td {
+        padding: 0.8rem;
+        font-size: 0.9rem;
     }
 }

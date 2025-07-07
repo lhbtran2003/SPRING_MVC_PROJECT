@@ -2,9 +2,8 @@ package ra.web.dto.course;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import ra.web.utils.validate.UniqueCourseName;
+import ra.web.utils.validate.add.UniqueCourseName;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;

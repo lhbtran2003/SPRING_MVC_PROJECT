@@ -5,11 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ra.web.dto.course.AddCourseRequest;
 import ra.web.dto.course.CourseDTO;
 import ra.web.dto.course.UpdateCourseRequest;
 import ra.web.dto.enrollment.EnrollmentDTO;
 import ra.web.dto.enrollment.UpdateEnrollmentRequest;
+import ra.web.dto.page.PageDto;
 import ra.web.dto.student.StudentDTO;
 import ra.web.entity.Course;
 import ra.web.entity.Status;
@@ -49,27 +51,14 @@ public class AdminController {
     }
 
     @GetMapping("/courses")
-    public String showListCourse(@RequestParam(required = false) String name,
+    public String showListCourse(@RequestParam(required = false, defaultValue = "") String keyword,
                                  @RequestParam(required = false, defaultValue = "id") String sortBy,
-                                 @RequestParam(required = false, defaultValue = "asc") String order,
+                                 @RequestParam(required = false, defaultValue = "asc") String direction,
+                                 @RequestParam(required = false, defaultValue = "0") int page,
                                  Model model
     ) {
-        List<Course> courses = courseService.searchAndSort(name, sortBy, order);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        List<CourseDTO> courseDTOS = courses.stream().map(c -> new CourseDTO(
-                c.getId(),
-                c.getName(),
-                c.getInstructor(),
-                c.getDuration(),
-                c.getImage(),
-                c.getCreateAt().format(formatter)
-        )).collect(Collectors.toList());
-
-        model.addAttribute("listCourse", courseDTOS);
-        model.addAttribute("name", name);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("order", order);
-
+        PageDto<CourseDTO> pageDto = courseService.searchAndSort(keyword, sortBy, direction, page, 5);
+        model.addAttribute("page", pageDto);
         return "admin/course/listCourse";
     }
 
@@ -122,31 +111,25 @@ public class AdminController {
     }
 
     @PostMapping("courses/delete")
-    public String deleteCourse(@RequestParam int id) {
-        courseService.delete(id);
+    public String deleteCourse(@RequestParam int id, RedirectAttributes redirectAttributes) {
+        try {
+            courseService.delete(id);
+            redirectAttributes.addFlashAttribute("success", "Xóa khóa học thành công");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Không được phép xóa khóa học này vì đã có sinh viên đăng kí");
+        }
         return "redirect:/admin/courses";
     }
 
     @GetMapping("/students")
-    public String showListStudent(Model model,
-                                  @RequestParam(required = false) String searchBy,
-                                  @RequestParam(required = false) String name,
+    public String showListStudent(@RequestParam(required = false, defaultValue = "") String keyword,
                                   @RequestParam(required = false, defaultValue = "id") String sortBy,
-                                  @RequestParam(required = false, defaultValue = "asc") String order
+                                  @RequestParam(required = false, defaultValue = "asc") String direction,
+                                  @RequestParam(required = false, defaultValue = "0") int page,
+                                  Model model
     ) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        List<StudentDTO> list = studentService.searchAndSort(searchBy, name, sortBy, order)
-                .stream()
-                        .map(s -> new StudentDTO(
-                                    s.getId(),
-                                    s.getName(),
-                                    s.getDob().format(formatter),
-                                    s.getEmail(),
-                                    s.getSex(),
-                                    s.getPhone(),
-                                    s.getStatus()
-                            )).collect(Collectors.toList());
-        model.addAttribute("studentList", list);
+        PageDto<StudentDTO> pageDto = studentService.searchAndSort(keyword, sortBy, direction,  page, 5);
+        model.addAttribute("page", pageDto);
         return "admin/student/listStudent";
     }
 
@@ -159,8 +142,9 @@ public class AdminController {
     @GetMapping("/enrollments")
     public String showListEnrollment (Model model,
                                       @RequestParam(required = false) Integer id,
-                                      @RequestParam(required = false) String name,
-                                      @RequestParam(required = false) String status) {
+                                      @RequestParam(required = false, defaultValue = "") String name,
+                                      @RequestParam(required = false, defaultValue = "") String status,
+                                      @RequestParam(required = false, defaultValue = "0") int page) {
         Status status1 = null;
         if (status != null) {
             if (status.equals("CONFIRM")) {
@@ -173,7 +157,8 @@ public class AdminController {
                 status1 = Status.WAITING;
             }
         }
-        model.addAttribute("enrollments", enrollmentService.searchAndSort(id, status1, name));
+        model.addAttribute("page", enrollmentService.searchAndSort(id, status1, name, page, 5 ));
+        model.addAttribute("status", status);
         return "admin/enrollment/listEnrollment";
     }
 

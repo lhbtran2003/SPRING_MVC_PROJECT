@@ -8,13 +8,16 @@ import ra.web.dao.student.IStudentDao;
 import ra.web.dto.enrollment.AddEnrollmentRequest;
 import ra.web.dto.enrollment.EnrollmentDTO;
 import ra.web.dto.enrollment.UpdateEnrollmentRequest;
+import ra.web.dto.page.PageDto;
 import ra.web.entity.Course;
 import ra.web.entity.Enrollment;
 import ra.web.entity.Status;
 import ra.web.entity.Student;
 
 import javax.transaction.Transactional;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EnrollmentServiceImpl implements IEnrollmentService {
@@ -30,6 +33,7 @@ public class EnrollmentServiceImpl implements IEnrollmentService {
         return enrollmentDao.findAll();
     }
 
+    @Transactional
     @Override
     public void add(AddEnrollmentRequest request) {
        Enrollment newEnrollment = new Enrollment();
@@ -73,19 +77,20 @@ public class EnrollmentServiceImpl implements IEnrollmentService {
 
     @Override
     public boolean isExitEnrollment(AddEnrollmentRequest request) {
-        for (Enrollment enrollment : enrollmentDao.findAll()) {
-            if (enrollment.getStudent().getId().equals(request.getStudentId()) &&
-                    enrollment.getCourse().getId().equals(request.getCourseId()) &&
-                    !enrollment.getStatus().equals(Status.DENIED)
-            ) {
-                return true;
-            }
-        }
-        return false;
+        return enrollmentDao.isEnrollmentExists(request.getStudentId(), request.getCourseId());
     }
 
     @Override
-    public List<Enrollment> searchAndSort(Integer studentId, Status status, String name) {
-        return enrollmentDao.searchAndSort(studentId,status, name);
+    public PageDto<Enrollment> searchAndSort(Integer studentId, Status status, String name, int page, int size) {
+        PageDto<Enrollment> pageDto = new PageDto<>();
+        List<Enrollment> enrollmentList = enrollmentDao.searchAndSort(studentId, status, name, page, size);
+
+        pageDto.setContent(enrollmentList);
+        pageDto.setCurrentPage(page);
+        pageDto.setSize(size);
+        pageDto.setKeyword(name);
+        pageDto.setSortBy(null);
+        pageDto.setTotalPages(enrollmentDao.totalPage(studentId,size,name,status));
+        return pageDto;
     }
 }

@@ -32,6 +32,6 @@ public class Course {
     @Column(nullable = true)
     private String image;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<Enrollment> enrollments;
+//    @OneToMany(mappedBy = "course")
+//    private List<Enrollment> enrollments;
 }

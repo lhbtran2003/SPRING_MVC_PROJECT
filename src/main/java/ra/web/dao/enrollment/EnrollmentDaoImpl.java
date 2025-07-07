@@ -1,5 +1,6 @@
 package ra.web.dao.enrollment;
 
+import com.google.protobuf.Internal;
 import org.springframework.stereotype.Repository;
 import ra.web.dto.enrollment.EnrollmentDTO;
 import ra.web.entity.Enrollment;
@@ -78,7 +79,7 @@ public class EnrollmentDaoImpl implements IEnrollmentDao {
 
     // dành cho bên student (user)
     @Override
-    public List<Enrollment> searchAndSort(Integer studentId, Status status, String name) {
+    public List<Enrollment> searchAndSort(Integer studentId, Status status, String name, int page, int size) {
         StringBuilder jpql = new StringBuilder("SELECT e FROM Enrollment e WHERE 1=1");
 
         if (status != null) {
@@ -106,9 +107,49 @@ public class EnrollmentDaoImpl implements IEnrollmentDao {
             query.setParameter("name", "%" + name.toLowerCase() + "%");
         }
 
+        query.setFirstResult(page * size).setMaxResults(size);
         return query.getResultList();
     }
 
+    @Override
+    public Long totalPage(Integer studentId, int size, String keyword, Status status) {
+        StringBuilder sql = new StringBuilder("SELECT CEILING(COUNT(e)/:size) FROM Enrollment e JOIN e.course c WHERE c.name LIKE :keyword ");
+        if (status != null) {
+            sql.append(" AND e.status = :status");
+        }
+        if (studentId != null) {
+            sql.append(" AND e.student.id = :studentId");
+        }
+        TypedQuery<Integer> query = em.createQuery(sql.toString(), Integer.class);
+        query.setParameter("keyword", "%"+keyword+"%").setParameter("size", Long.valueOf(size));
+
+        if (status != null) {
+            query.setParameter("status", status);
+        }
+
+        if(studentId != null) {
+            query.setParameter("studentId", studentId);
+        }
+        return Long.valueOf(query.getSingleResult());
+    }
+
+    @Override
+    public boolean isEnrollmentExists(Integer courseId, Integer studentId) {
+        String jpql = "SELECT COUNT(e) " +
+                "FROM Enrollment e " +
+                "WHERE e.course.id = :courseId " +
+                "AND e.student.id = :studentId " +
+                "AND e.status IN (:status1, :status2)";
+
+        Long count = em.createQuery(jpql, Long.class)
+                .setParameter("courseId", courseId)
+                .setParameter("studentId", studentId)
+                .setParameter("status1", Status.WAITING)
+                .setParameter("status2", Status.CONFIRM)
+                .getSingleResult();
+
+        return count > 0;
+    }
 }
 
 

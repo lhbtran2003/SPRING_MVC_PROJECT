@@ -4,13 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
-import ra.web.utils.validate.PasswordMatch;
-import ra.web.utils.validate.UniqueEmail;
-import ra.web.utils.validate.UniquePhone;
+import ra.web.utils.validate.add.PasswordMatch;
+import ra.web.utils.validate.add.UniqueEmail;
+import ra.web.utils.validate.add.UniquePhone;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 @Component
 @Getter
@@ -22,11 +20,12 @@ public class RegisterRequest {
 
     @NotBlank(message = "Vui lòng nhập email")
     @Email(message = "email không đúng định dạng")
-    @UniqueEmail(message = "húuuuuuu")
+    @UniqueEmail(message = "Email đã được sử dụng")
     private String email;
 
     @NotBlank(message = "Vui lòng nhập số điện thoại")
-    @UniquePhone(message = "hahahahha")
+    @Pattern(regexp = "^(0|\\+84)[0-9]{9}$", message = "Số điện thoại không hợp lệ")
+    @UniquePhone(message = "Số điện thoại đã được sử dụng")
     private String phone;
 
     @NotNull(message = "Vui lòng chọn giới tính")
@@ -34,6 +33,7 @@ public class RegisterRequest {
 
     @NotNull(message = "Vui lòng nhập ngày sinh")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Ngày sinh không hợp lệ")
     private LocalDate dob;
 
     @NotBlank(message = "Vui lòng nhập mật khẩu")

@@ -5,16 +5,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ra.web.dao.course.ICourseDao;
 import ra.web.dto.course.AddCourseRequest;
+import ra.web.dto.course.CourseDTO;
 import ra.web.dto.course.UpdateCourseRequest;
+import ra.web.dto.page.PageDto;
 import ra.web.entity.Course;
 import ra.web.utils.cloudinary.CloudinaryService;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class CourseServiceImpl implements ICourseService{
+public class CourseServiceImpl implements ICourseService {
     @Autowired
     private ICourseDao courseDao;
 
@@ -73,7 +78,7 @@ public class CourseServiceImpl implements ICourseService{
 
     @Override
     public void delete(Integer id) {
-          courseDao.delete(id);
+        courseDao.delete(id);
     }
 
     @Override
@@ -82,13 +87,57 @@ public class CourseServiceImpl implements ICourseService{
     }
 
     @Override
-    public List<Course> findByName(String name) {
+    public PageDto<CourseDTO> findListByName(String name, int page, int size) {
+        PageDto<CourseDTO> pageDto = new PageDto<>();
+        List<Course> courseList = courseDao.getListCourseByName(name, page, size);
+        List<CourseDTO> courseDTOList = courseList.stream().map(c -> new CourseDTO(
+                c.getId(),
+                c.getName(),
+                c.getInstructor(),
+                c.getDuration(),
+                c.getImage(),
+                c.getCreateAt().toString()
+        )).collect(Collectors.toList());
+        pageDto.setContent(courseDTOList);
+        pageDto.setCurrentPage(page);
+        pageDto.setKeyword(name);
+        pageDto.setTotalPages(courseDao.totalPage(size,name));
+        pageDto.setSize(size);
+        return pageDto;
+    }
+
+    @Override
+    public Course getCourseByName(String name) {
         return courseDao.getCourseByName(name);
     }
 
     @Override
-    public List<Course> searchAndSort(String name, String sortBy, String order) {
-        return courseDao.searchAndSort(name, sortBy, order);
+    public PageDto<CourseDTO> searchAndSort(String keyword, String sortBy, String direction, int page, int size) {
+        PageDto<CourseDTO> pageDto = new PageDto<>();
+
+        List<Course> courseList = courseDao.searchAndSort(keyword, sortBy, direction, page, size);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        List<CourseDTO> courseDTOList = courseList
+                .stream()
+                .map(c -> new CourseDTO(
+                        c.getId(),
+                        c.getName(),
+                        c.getInstructor(),
+                        c.getDuration(),
+                        c.getImage(),
+                        c.getCreateAt().format(formatter)
+                )).collect(Collectors.toList());
+
+        pageDto.setContent(courseDTOList);
+        pageDto.setSize(size);
+        pageDto.setCurrentPage(page);
+        pageDto.setDirection(direction);
+        pageDto.setKeyword(keyword);
+        pageDto.setSortBy(sortBy);
+        pageDto.setTotalPages(courseDao.totalPage(size, keyword));
+
+        return pageDto;
     }
 
     @Override

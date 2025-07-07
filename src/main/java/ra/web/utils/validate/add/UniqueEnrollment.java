@@ -1,4 +1,4 @@
-package ra.web.utils.validate;
+package ra.web.utils.validate.add;
 
 import javax.validation.Constraint;
 import java.lang.annotation.ElementType;

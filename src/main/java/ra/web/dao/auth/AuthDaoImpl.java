@@ -8,8 +8,8 @@ import ra.web.entity.Student;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Repository
 public class AuthDaoImpl implements IAuthDao {
@@ -20,29 +20,52 @@ public class AuthDaoImpl implements IAuthDao {
 
 
     @Override
-    public boolean isExistEmail(String email) {
-        Long count = em.createQuery("SELECT COUNT(*) FROM Student s WHERE s.email = :email", Long.class).setParameter("email", email).getSingleResult();
+    public boolean isExistEmail(java.lang.String email, Integer studentId) {
+        StringBuilder jpql = new StringBuilder("SELECT COUNT(*) FROM Student s WHERE s.email = :email");
+
+        if (studentId != null) {
+            jpql.append(" AND s.id <> :studentId");
+        }
+        TypedQuery<Long> query = em.createQuery(jpql.toString(), Long.class);
+        query.setParameter("email", email);
+
+        if (studentId != null) {
+            query.setParameter("studentId", studentId);
+        }
+        Long count = query.getSingleResult();
         return count > 0;
     }
 
     @Override
-    public boolean isExistPhone(String phone) {
-        Long count = em.createQuery("SELECT COUNT(*) FROM Student s WHERE s.phone = :phone", Long.class).setParameter("phone", phone).getSingleResult();
+    public boolean isExistPhone(java.lang.String phone, Integer studentId) {
+        StringBuilder jpql = new StringBuilder("SELECT COUNT(*) FROM Student s WHERE s.phone = :phone");
+
+        if (studentId != null) {
+            jpql.append(" AND s.id <> :studentId");
+        }
+        TypedQuery<Long> query = em.createQuery(jpql.toString(), Long.class);
+        query.setParameter("phone", phone);
+
+        if (studentId != null) {
+            query.setParameter("studentId", studentId);
+        }
+        Long count = query.getSingleResult();
         return count > 0;
     }
 
     @Override
     @Transactional
     public void save(Student student) {
-        em.persist(student);
+                em.persist(student);
     }
 
+
+
     @Override
-    public Student login(LoginRequest loginRequest) {
+    public Student findByEmail(String email) {
         try {
-            return em.createQuery("SELECT s FROM Student s WHERE s.email = :email AND s.password = :password", Student.class)
-                    .setParameter("email", loginRequest.getEmail())
-                    .setParameter("password", loginRequest.getPassword())
+            return em.createQuery("SELECT s FROM Student s WHERE s.email = :email", Student.class)
+                    .setParameter("email", email)
                     .getSingleResult();
         } catch (NoResultException e) {
             return null;

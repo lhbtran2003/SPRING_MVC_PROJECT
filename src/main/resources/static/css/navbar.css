@@ -1,11 +1,20 @@
-/* Navbar Styles */
+/* Modern Light Navbar */
+:root {
+    --primary: #4a6fa5;
+    --primary-light: #6b8cae;
+    --accent: #ff7e5f;
+    --text: #333333;
+    --text-light: #666666;
+    --border: #e0e0e0;
+}
+
 .main-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -13,41 +22,53 @@
 
 .nav-center {
     display: flex;
-    justify-content: center;
-    flex-grow: 1;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .nav-btn {
-    padding: 0.75rem 1.5rem;
+    padding: 0.5rem 1.25rem;
     text-decoration: none;
-    color: #4f46e5;
+    color: var(--text);
     font-weight: 500;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
 .nav-btn:hover {
-    background-color: #f1f5ff;
-    transform: translateY(-2px);
+    color: var(--primary);
+    background-color: rgba(74, 111, 165, 0.05);
 }
 
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-right > div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-right button,
 .logout-btn {
-    padding: 0.75rem 1.5rem;
-    background-color: #ef4444;
+    padding: 0.5rem 1.25rem;
+    background-color: var(--primary);
     color: white;
-    border-radius: 6px;
-    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
     font-weight: 500;
-    transition: all 0.3s ease;
 }
 
+.nav-right button:hover,
 .logout-btn:hover {
-    background-color: #dc2626;
-    transform: translateY(-2px);
+    background-color: var(--primary-light);
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
     .main-nav {
         flex-direction: column;
@@ -57,11 +78,6 @@
 
     .nav-center {
         flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-
-    .nav-btn, .logout-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
+        justify-content: center;
     }
 }

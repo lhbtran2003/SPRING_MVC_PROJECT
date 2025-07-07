@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ra.web.dto.enrollment.AddEnrollmentRequest;
 import ra.web.dto.enrollment.UpdateEnrollmentRequest;
+import ra.web.dto.page.PageDto;
 import ra.web.entity.Course;
 import ra.web.entity.Enrollment;
 import ra.web.entity.Status;
@@ -19,6 +20,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/enrollment")
 public class EnrollmentController {
+    //Dùng cho các tác vụ liên quan đến enrollment bên phía user
     @Autowired
     private IEnrollmentService enrollmentService;
 
@@ -49,8 +51,10 @@ public class EnrollmentController {
     @GetMapping("/history")
     public String enrollmentHistory(Model model,
                                     HttpSession session,
-                                    @RequestParam(required = false) String name,
-                                    @RequestParam(required = false) String status) {
+                                    @RequestParam(required = false, defaultValue = "") String name,
+                                    @RequestParam(required = false, defaultValue = "") String status,
+                                    @RequestParam(required = false, defaultValue = "0") int page)
+        {
 
         Student s = (Student) session.getAttribute("userLogin");
         if (s == null) {
@@ -68,8 +72,9 @@ public class EnrollmentController {
                 status1 = Status.WAITING;
             }
         }
-        List<Enrollment> history = enrollmentService.searchAndSort(s.getId(), status1, name);
-        model.addAttribute("enrollments", history);
+        PageDto<Enrollment> pageDto = enrollmentService.searchAndSort(s.getId(), status1, name, page, 5);
+        model.addAttribute("page", pageDto);
+        model.addAttribute("student", s);
         return "student/enrollmentHistory";
     }
 

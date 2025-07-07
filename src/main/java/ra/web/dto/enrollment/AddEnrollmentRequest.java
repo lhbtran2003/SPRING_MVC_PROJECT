@@ -2,9 +2,7 @@ package ra.web.dto.enrollment;
 
 import lombok.Getter;
 import lombok.Setter;
-import ra.web.utils.validate.UniqueEnrollment;
-
-import javax.validation.constraints.NotNull;
+import ra.web.utils.validate.add.UniqueEnrollment;
 
 @Getter
 @Setter

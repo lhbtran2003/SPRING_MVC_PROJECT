@@ -1,4 +1,4 @@
-package ra.web.utils.validate;
+package ra.web.utils.validate.add;
 
 import org.springframework.stereotype.Component;
 import ra.web.dto.auth.RegisterRequest;
@@ -6,7 +6,7 @@ import ra.web.dto.auth.RegisterRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-@Component
+
 public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch, RegisterRequest> {
 
     @Override
@@ -19,6 +19,14 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
         if (request.getPassword() == null || request.getConfirmPassword() == null) {
             return true;
         }
-        return request.getPassword().equals(request.getConfirmPassword());
+        boolean isMatch = request.getPassword().equals(request.getConfirmPassword());
+
+        if (!isMatch) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("Xác nhận mật khẩu không trùng khớp")
+                    .addPropertyNode("confirmPassword")
+                    .addConstraintViolation();
+        }
+        return isMatch;
     }
 }
